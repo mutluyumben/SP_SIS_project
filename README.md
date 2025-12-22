@@ -21,7 +21,7 @@ Muti:
 4- Review and acceping pull requests
 
 Sefa: 
-2- docker_compose.yml: Creating file which is for PostgreSQL and C++
+1- docker_compose.yml: Creating file which is for PostgreSQL and C++
 2- Volume setup for PostgreSQL
 3- Docker hub account setup for pushing images to Docker Hub
 
