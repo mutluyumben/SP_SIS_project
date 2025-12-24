@@ -1,3 +1,9 @@
 .git
 build/
+<<<<<<< HEAD
+.github
 *.md
+
+=======
+*.md
+>>>>>>> 93c6939bf669879a9af108d27bb2b3fc1a06dae5
