@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: sp-sis-db-container
+    environment:
+      POSTGRES_USER: sis_user
+      POSTGRES_PASSWORD: sis_password
+      POSTGRES_DB: sis_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - sis-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sis_user -d sis_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    
+    image: sefaercanli/sp-sis-project-app:v1.0
+    container_name: sp-sis-app-container
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: sis_user
+      DB_PASS: sis_password
+      DB_NAME: sis_db
+    networks:
+      - sis-network
+
+networks:
+  sis-network:
+    driver: bridge
+
+volumes:
+  db_data:
