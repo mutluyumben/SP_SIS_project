@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   db:
-    image: postgres:latest
+    image: postgres:16
     container_name: sp-sis-db-container
     environment:
       POSTGRES_USER: sis_user
@@ -20,7 +18,6 @@ services:
 
   app:
     build: .
-    
     image: sefaercanli/sp-sis-project-app:v1.0
     container_name: sp-sis-app-container
     depends_on:
@@ -40,4 +37,4 @@ networks:
     driver: bridge
 
 volumes:
-  db_data:
+  db_data: {}
