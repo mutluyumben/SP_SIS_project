@@ -4,8 +4,8 @@ project(StudentInformationSystem)
 set(CMAKE_CXX_STANDARD 17)
 
 # PkgConfig ile libpqxx kutuphanesini bul
+# Gerekli paketler
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(PQXX REQUIRED libpqxx)
 
 # Header dosyalari
 include_directories(include ${PQXX_INCLUDE_DIRS})
@@ -16,3 +16,8 @@ add_executable(sis_app src/main.cpp src/Student.cpp src/Database.cpp)
 
 # Kutuphaneyi bagla
 target_link_libraries(sis_app ${PQXX_LIBRARIES})
+# Header dosyaları nerede?
+include_directories(include)
+
+# Projeyi oluştur
+add_executable(sis_app src/main.cpp src/Student.cpp)
