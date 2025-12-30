@@ -1,23 +1,25 @@
 cmake_minimum_required(VERSION 3.10)
-project(StudentInformationSystem)
 
+project(SP_SIS_project)
+
+# C++ Standart Ayarı
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# PkgConfig ile libpqxx kutuphanesini bul
-# Gerekli paketler
+# Paketleri Bul (libpqxx)
 find_package(PkgConfig REQUIRED)
+pkg_check_modules(PQXX REQUIRED libpqxx)
 
-# Header dosyalari
-include_directories(include ${PQXX_INCLUDE_DIRS})
-link_directories(${PQXX_LIBRARY_DIRS})
-
-# Projeyi olustur (Database.cpp ve Student.cpp dahil)
-add_executable(sis_app src/main.cpp src/Student.cpp src/Database.cpp)
-
-# Kutuphaneyi bagla
-target_link_libraries(sis_app ${PQXX_LIBRARIES})
-# Header dosyaları nerede?
+# Include klasörünü tanıt
 include_directories(include)
+include_directories(${PQXX_INCLUDE_DIRS})
 
-# Projeyi oluştur
-add_executable(sis_app src/main.cpp src/Student.cpp)
+# Src klasöründeki tüm .cpp dosyalarını bul
+file(GLOB SOURCES "src/*.cpp")
+
+# Executable (Çalıştırılabilir dosya) oluştur
+
+add_executable(sis-project-app ${SOURCES})
+
+# Kütüphaneyi bağla
+target_link_libraries(sis-project-app ${PQXX_LIBRARIES})
