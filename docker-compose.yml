@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:16
@@ -18,10 +20,12 @@ services:
 
   app:
     build: .
+    # Proje kurallarına uygun image ismi (Student 2 sorumluluğu) 
     image: sefaercanli/sp-sis-project-app:v1.0
     container_name: sp-sis-app-container
     depends_on:
       db:
+        # DB tamamen hazır olmadan App başlamaz (Week 3 için kritik)
         condition: service_healthy
     environment:
       DB_HOST: db
@@ -37,4 +41,4 @@ networks:
     driver: bridge
 
 volumes:
-  db_data: {}
+  db_data:
