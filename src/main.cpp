@@ -4,7 +4,56 @@
 int main() {
     try {
         // Compose dosyasındaki bilgilerle birebir aynı olmalı
-        std::string connection_string = 
+#include <iostream>
+#include "../include/Database.h"
+#include "../include/Student.h"
+
+int main() {
+    // Docker Compose ayarlarina gore baglanti
+    Database db("sisdb", "sisuser", "sispassword", "db", 5432);
+
+    if (!db.connect()) {
+        std::cout << "Baglanti basarisiz, cikiliyor..." << std::endl;
+        return 1;
+    }
+
+    int choice;
+    while (true) {
+        std::cout << "\n--- OGRENCI ISLERI (SIS) ---\n";
+        std::cout << "1. Ogrenci Ekle\n";
+        std::cout << "2. Ogrenci Sil\n";
+        std::cout << "3. Listele\n";
+        std::cout << "4. Cikis\n";
+        std::cout << "Seciminiz: ";
+        std::cin >> choice;
+
+        if (choice == 4) break;
+
+        if (choice == 1) {
+            std::string name, surname;
+            int no;
+            std::cout << "Ad: "; std::cin >> name;
+            std::cout << "Soyad: "; std::cin >> surname;
+            std::cout << "Ogrenci No: "; std::cin >> no;
+            db.addStudent(Student(0, name, surname, no));
+        } 
+        else if (choice == 2) {
+            int no;
+            std::cout << "Silinecek No: "; std::cin >> no;
+            db.deleteStudent(no);
+        }
+        else if (choice == 3) {
+            auto students = db.getAllStudents();
+            std::cout << "\n--- OGRENCI LISTESI ---\n";
+            for (const auto& s : students) {
+                s.display();
+            }
+        }
+    }
+
+    db.disconnect();
+    return 0;
+}        std::string connection_string = 
             "host=db port=5432 dbname=sis_db user=sis_user password=sis_password";
 
         pqxx::connection C(connection_string);
