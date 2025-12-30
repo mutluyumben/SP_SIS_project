@@ -1,4 +1,4 @@
-#include "../include/Student.h"
+#include "Student.h"
 
 Student::Student(int id, std::string name, std::string surname, int studentNumber) {
     this->id = id;

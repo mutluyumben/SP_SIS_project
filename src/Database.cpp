@@ -1,4 +1,4 @@
-#include "../include/Database.h"
+#include "Database.h"
 #include <iostream>
 
 Database::Database(const std::string& dbName, const std::string& user, const std::string& password, const std::string& host, int port) {
@@ -23,7 +23,7 @@ bool Database::connect() {
 
 void Database::disconnect() {
     if (conn && conn->is_open()) {
-        conn->disconnect();
+        conn->close();
         std::cout << "Baglanti kesildi." << std::endl;
     }
 }
