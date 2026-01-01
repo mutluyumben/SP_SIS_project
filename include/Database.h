@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 #include <pqxx/pqxx>
-#include "Student.h"
+#include "Student.h" // <--- Bu eksikti, o yuzden Student taninmiyordu
 
 class Database {
 private:
@@ -19,7 +19,7 @@ public:
     void disconnect();
     bool isConnected() const;
 
-    // --- YENI EKLENEN CRUD FONKSIYONLARI ---
+    // --- EKSIK OLAN FONKSIYONLAR ---
     void createTable(); 
     void addStudent(const Student& student);
     void deleteStudent(int studentNumber);

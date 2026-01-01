@@ -1,3 +1,5 @@
+#include "Database.h"
+#include "Student.h"
 #include <iostream>
 #include <pqxx/pqxx> 
 
