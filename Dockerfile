@@ -18,5 +18,5 @@ RUN mkdir -p build && cd build && \
     cmake .. && \
     make
 
-CMD ["./build/sis-project-app"]
+CMD ["./build/sis_app"]
 
