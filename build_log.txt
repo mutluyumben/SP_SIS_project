@@ -1,0 +1,72 @@
+time="2025-12-30T12:24:45+03:00" level=warning msg="/home/sefaercanli/SP_SIS_project/docker-compose.yml: `version` is obsolete"
+#0 building with "default" instance using docker driver
+
+#1 [app internal] load build definition from Dockerfile
+#1 transferring dockerfile: 381B done
+#1 DONE 0.0s
+
+#2 [app internal] load metadata for docker.io/library/ubuntu:latest
+#2 DONE 0.4s
+
+#3 [app internal] load .dockerignore
+#3 transferring context: 76B done
+#3 DONE 0.0s
+
+#4 [app 1/5] FROM docker.io/library/ubuntu:latest@sha256:c35e29c9450151419d9448b0fd75374fec4fff364a27f176fb458d472dfc9e54
+#4 DONE 0.0s
+
+#5 [app internal] load build context
+#5 transferring context: 4.30kB done
+#5 DONE 0.0s
+
+#6 [app 2/5] RUN apt-get update && apt-get install -y     build-essential     cmake     git     libpqxx-dev     postgresql-client     && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [app 3/5] WORKDIR /app
+#7 CACHED
+
+#8 [app 4/5] COPY . .
+#8 DONE 0.0s
+
+#9 [app 5/5] RUN mkdir -p build && cd build &&     cmake .. &&     make
+#9 0.268 -- The C compiler identification is GNU 13.3.0
+#9 0.295 -- The CXX compiler identification is GNU 13.3.0
+#9 0.306 -- Detecting C compiler ABI info
+#9 0.376 -- Detecting C compiler ABI info - done
+#9 0.382 -- Check for working C compiler: /usr/bin/cc - skipped
+#9 0.383 -- Detecting C compile features
+#9 0.383 -- Detecting C compile features - done
+#9 0.389 -- Detecting CXX compiler ABI info
+#9 0.452 -- Detecting CXX compiler ABI info - done
+#9 0.459 -- Check for working CXX compiler: /usr/bin/c++ - skipped
+#9 0.459 -- Detecting CXX compile features
+#9 0.459 -- Detecting CXX compile features - done
+#9 0.462 -- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1") 
+#9 0.463 -- Checking for module 'libpqxx'
+#9 0.470 --   Found libpqxx, version 7.8.1
+#9 0.486 -- Configuring done (0.3s)
+#9 0.488 -- Generating done (0.0s)
+#9 0.489 -- Build files have been written to: /app/build
+#9 0.516 [ 25%] Building CXX object CMakeFiles/sis-project-app.dir/src/Database.cpp.o
+#9 1.024 /app/src/Database.cpp: In member function 'void Database::disconnect()':
+#9 1.024 /app/src/Database.cpp:26:15: error: 'class pqxx::connection' has no member named 'disconnect'
+#9 1.024    26 |         conn->disconnect();
+#9 1.024       |               ^~~~~~~~~~
+#9 1.106 make[2]: *** [CMakeFiles/sis-project-app.dir/build.make:76: CMakeFiles/sis-project-app.dir/src/Database.cpp.o] Error 1
+#9 1.107 make[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/sis-project-app.dir/all] Error 2
+#9 1.107 make: *** [Makefile:91: all] Error 2
+#9 ERROR: process "/bin/sh -c mkdir -p build && cd build &&     cmake .. &&     make" did not complete successfully: exit code: 2
+------
+ > [app 5/5] RUN mkdir -p build && cd build &&     cmake .. &&     make:
+0.488 -- Generating done (0.0s)
+0.489 -- Build files have been written to: /app/build
+0.516 [ 25%] Building CXX object CMakeFiles/sis-project-app.dir/src/Database.cpp.o
+1.024 /app/src/Database.cpp: In member function 'void Database::disconnect()':
+1.024 /app/src/Database.cpp:26:15: error: 'class pqxx::connection' has no member named 'disconnect'
+1.024    26 |         conn->disconnect();
+1.024       |               ^~~~~~~~~~
+1.106 make[2]: *** [CMakeFiles/sis-project-app.dir/build.make:76: CMakeFiles/sis-project-app.dir/src/Database.cpp.o] Error 1
+1.107 make[1]: *** [CMakeFiles/Makefile2:83: CMakeFiles/sis-project-app.dir/all] Error 2
+1.107 make: *** [Makefile:91: all] Error 2
+------
+failed to solve: process "/bin/sh -c mkdir -p build && cd build &&     cmake .. &&     make" did not complete successfully: exit code: 2

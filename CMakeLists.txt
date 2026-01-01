@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
-project(StudentInformationSystem)
 
+project(SP_SIS_project)
+
+# C++ Standart Ayarı
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+
 
 # 1. Gerekli Paketler (PostgreSQL)
 find_package(PkgConfig REQUIRED)
@@ -32,3 +37,4 @@ target_link_libraries(sis_test GTest::gtest_main)
 
 # Testi kaydet
 add_test(NAME StudentTest COMMAND sis_test)
+develop
