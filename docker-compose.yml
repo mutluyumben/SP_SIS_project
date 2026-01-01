@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:16
@@ -13,7 +11,7 @@ services:
     networks:
       - sis-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sis_user -d sis_db"]
+      test: [ "CMD-SHELL", "pg_isready -U sis_user -d sis_db" ]
       interval: 5s
       timeout: 5s
       retries: 5
