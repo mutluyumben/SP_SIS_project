@@ -1,3 +1,4 @@
+--
 Anladım, hiçbir görselleştirme veya özel Markdown biçimlendirmesi (kalın yazı, tablo vb.) olmadan, doğrudan kopyalayıp bir Not Defterine (.txt) yapıştırabileceğin saf metin (plaintext) hali aşağıdadır. Dokümandaki tüm detaylar sırasıyla eklenmiştir:
 
 SYSTEM PROGRAMMING TERM PROJECT - FULL DOCUMENT CONTENT
