@@ -99,3 +99,50 @@ std::vector<Student> Database::getAllStudents() {
   }
   return students;
 }
+
+// Öğrenci güncelleme
+void Database::updateStudent(int studentNumber, const std::string &newName,
+                             const std::string &newSurname) {
+  try {
+    pqxx::work w(*conn);
+    pqxx::result r = w.exec_params(
+        "UPDATE students SET name = $1, surname = $2 WHERE student_number = $3",
+        newName, newSurname, studentNumber);
+
+    if (r.affected_rows() == 0) {
+      std::cerr << "Guncellenecek kayit bulunamadi (No: " << studentNumber
+                << ")" << std::endl;
+      // Commit etmeye gerek yok ama transaction'ı temiz kapatmak iyidir
+      w.commit();
+    } else {
+      w.commit();
+      std::cout << "Ogrenci Guncellendi (No: " << studentNumber << ")"
+                << std::endl;
+    }
+  } catch (const std::exception &e) {
+    std::cerr << "Guncelleme Hatasi: " << e.what() << std::endl;
+  }
+}
+
+// Öğrenci bulma
+Student Database::findStudent(int studentNumber) {
+  try {
+    pqxx::work w(*conn);
+    pqxx::result r = w.exec_params(
+        "SELECT id, name, surname, student_number FROM students WHERE "
+        "student_number = $1",
+        studentNumber);
+
+    if (r.empty()) {
+      throw std::runtime_error("Ogrenci bulunamadi: " +
+                               std::to_string(studentNumber));
+    }
+
+    auto row = r[0];
+    return Student(row[0].as<int>(), row[1].as<std::string>(),
+                   row[2].as<std::string>(), row[3].as<int>());
+  } catch (const std::exception &e) {
+    // Hatayı yukarı fırlat, main içinde yakalanacak
+    throw;
+  }
+}
