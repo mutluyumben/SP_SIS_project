@@ -2,3 +2,4 @@
 build/
 *.md
 docker-compose.yml
+vcpkg/
