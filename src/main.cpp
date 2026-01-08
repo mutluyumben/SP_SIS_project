@@ -19,7 +19,8 @@ int main() {
     std::cout << "1. Ogrenci Ekle\n";
     std::cout << "2. Ogrenci Sil\n";
     std::cout << "3. Listele\n";
-    std::cout << "4. Cikis\n";
+    std::cout << "4. Bilgi Guncelle\n";
+    std::cout << "5. Cikis\n";
     std::cout << "Seciminiz: ";
     std::cin >> choice;
 
@@ -47,6 +48,16 @@ int main() {
       for (const auto &s : students) {
         s.display();
       }
+    } else if (choice == 4) {
+      int no;
+      std::string newName, newSurname;
+      std::cout << "Guncellenecek Ogrenci No: ";
+      std::cin >> no;
+      std::cout << "Yeni Ad: ";
+      std::cin >> newName;
+      std::cout << "Yeni Soyad: ";
+      std::cin >> newSurname;
+      db.updateStudent(no, newName, newSurname);
     }
   }
 
