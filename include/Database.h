@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 #include <pqxx/pqxx>
-#include "Student.h" // <--- Bu eksikti, o yuzden Student taninmiyordu
+#include "Student.h"
 
 class Database {
 private:
@@ -19,11 +19,15 @@ public:
     void disconnect();
     bool isConnected() const;
 
-    // --- EKSIK OLAN FONKSIYONLAR ---
     void createTable(); 
     void addStudent(const Student& student);
     void deleteStudent(int studentNumber);
     std::vector<Student> getAllStudents();
+
+    // --- HAFTA 4: YENI EKLENENLER ---
+    void updateStudent(int studentNumber, const std::string& newName, const std::string& newSurname);
+    Student findStudent(int studentNumber);
 };
 
 #endif
+
