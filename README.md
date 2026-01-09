@@ -31,3 +31,10 @@ Sefa:
 3- Verify that a “Hello World” level C++ code runs successfully on Docker.
 
 https://hub.docker.com/u/sefaercanli
+Week 4 Task Distribution:
+Ismail:
+1- Advanced CRUD implementation (Find & Update)
+2- Docker environment setup (Dockerfile & Compose)
+3- Documentation update
+- [x] Week 4 Tasks Completed.
+
