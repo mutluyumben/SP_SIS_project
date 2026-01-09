@@ -18,12 +18,10 @@ services:
 
   app:
     build: .
-    # Proje kurallarına uygun image ismi (Student 2 sorumluluğu) 
     image: sefaercanli/sp-sis-project-app:v1.0
     container_name: sp-sis-app-container
     depends_on:
       db:
-        # DB tamamen hazır olmadan App başlamaz (Week 3 için kritik)
         condition: service_healthy
     environment:
       DB_HOST: db
@@ -31,6 +29,8 @@ services:
       DB_USER: sis_user
       DB_PASS: sis_password
       DB_NAME: sis_db
+    stdin_open: true 
+    tty: true 
     networks:
       - sis-network
 
