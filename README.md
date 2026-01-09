@@ -38,3 +38,10 @@ Ismail:
 3- Documentation update
 - [x] Week 4 Tasks Completed.
 
+
+Week 4 Task Distribution:
+Ismail:
+1- Advanced CRUD implementation (Find & Update)
+2- Docker environment setup (Dockerfile & Compose)
+3- Documentation update
+- [x] Week 4 Tasks Completed.
