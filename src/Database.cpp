@@ -1,148 +1,56 @@
 #include "Database.h"
 #include <iostream>
 
-// Constructor - Bağlantı string'i oluşturur
-Database::Database(const std::string &dbName, const std::string &user,
-                   const std::string &password, const std::string &host,
-                   int port) {
-  connectionString = "dbname=" + dbName + " user=" + user +
-                     " password=" + password + " host=" + host +
-                     " port=" + std::to_string(port);
+Database::Database(const std::string& connStr) : connectionString(connStr) {}
+
+Database::~Database() {
+    disconnect();
 }
 
-// Veritabanına bağlanma
 bool Database::connect() {
-  try {
-    conn = std::make_unique<pqxx::connection>(connectionString);
-    if (conn->is_open()) {
-      std::cout << "Veritabanina baglanildi: " << conn->dbname() << std::endl;
-      createTable(); // Bağlanınca tabloyu otomatik oluştur
-      return true;
+    try {
+        conn = std::make_unique<pqxx::connection>(connectionString);
+        if (conn->is_open()) {
+            std::cout << "Veritabanina Baglanildi: " << conn->dbname() << std::endl;
+            return true;
+        }
+        return false;
+    } catch (const std::exception &e) {
+        std::cerr << "Baglanti Hatasi: " << e.what() << std::endl;
+        return false;
     }
-    return false;
-  } catch (const std::exception &e) {
-    std::cerr << "Baglanti Hatasi: " << e.what() << std::endl;
-    return false;
-  }
 }
 
-// Bağlantıyı kesme - libpqxx 7.x'te close() kullanılır
 void Database::disconnect() {
-  if (conn && conn->is_open()) {
-    conn->close();
-    std::cout << "Baglanti kesildi." << std::endl;
-  }
+    if (conn && conn->is_open()) {
+        conn->close();
+        std::cout << "Baglanti Kapatildi." << std::endl;
+    }
 }
 
-// Bağlantı durumu kontrolü
-bool Database::isConnected() const { return conn && conn->is_open(); }
+bool Database::isConnected() const {
+    return conn && conn->is_open();
+}
 
-// --- CRUD İŞLEMLERİ ---
-
-// Students tablosunu oluştur
 void Database::createTable() {
-  try {
-    pqxx::work w(*conn);
-    w.exec("CREATE TABLE IF NOT EXISTS students ("
-           "id SERIAL PRIMARY KEY, "
-           "name VARCHAR(50), "
-           "surname VARCHAR(50), "
-           "student_number INT UNIQUE)");
-    w.commit();
-  } catch (const std::exception &e) {
-    std::cerr << "Tablo Olusturma Hatasi: " << e.what() << std::endl;
-  }
-}
+    if (!conn || !conn->is_open()) return;
 
-// Öğrenci ekleme
-void Database::addStudent(const Student &student) {
-  try {
-    pqxx::work w(*conn);
-    w.exec_params("INSERT INTO students (name, surname, student_number) VALUES "
-                  "($1, $2, $3)",
-                  student.getName(), student.getSurname(),
-                  student.getStudentNumber());
-    w.commit();
-    std::cout << "Ogrenci Eklendi: " << student.getName() << std::endl;
-  } catch (const std::exception &e) {
-    std::cerr << "Ekleme Hatasi: " << e.what() << std::endl;
-  }
-}
-
-// Öğrenci silme
-void Database::deleteStudent(int studentNumber) {
-  try {
-    pqxx::work w(*conn);
-    w.exec_params("DELETE FROM students WHERE student_number = $1",
-                  studentNumber);
-    w.commit();
-    std::cout << "Ogrenci Silindi (No: " << studentNumber << ")" << std::endl;
-  } catch (const std::exception &e) {
-    std::cerr << "Silme Hatasi: " << e.what() << std::endl;
-  }
-}
-
-// Tüm öğrencileri getir
-std::vector<Student> Database::getAllStudents() {
-  std::vector<Student> students;
-  try {
-    pqxx::work w(*conn);
-    pqxx::result r =
-        w.exec("SELECT id, name, surname, student_number FROM students");
-
-    for (auto row : r) {
-      students.emplace_back(row[0].as<int>(), row[1].as<std::string>(),
-                            row[2].as<std::string>(), row[3].as<int>());
+    try {
+        pqxx::work W(*conn);
+        std::string sql = "CREATE TABLE IF NOT EXISTS students (" \
+                          "id SERIAL PRIMARY KEY," \
+                          "name VARCHAR(50) NOT NULL," \
+                          "surname VARCHAR(50) NOT NULL," \
+                          "student_number INT UNIQUE NOT NULL," \
+                          "grade FLOAT);";
+        W.exec(sql);
+        W.commit();
+        std::cout << "Tablo 'students' hazir." << std::endl;
+    } catch (const std::exception &e) {
+        std::cerr << "Tablo Hatasi: " << e.what() << std::endl;
     }
-  } catch (const std::exception &e) {
-    std::cerr << "Listeleme Hatasi: " << e.what() << std::endl;
-  }
-  return students;
 }
 
-// Öğrenci güncelleme
-void Database::updateStudent(int studentNumber, const std::string &newName,
-                             const std::string &newSurname) {
-  try {
-    pqxx::work w(*conn);
-    pqxx::result r = w.exec_params(
-        "UPDATE students SET name = $1, surname = $2 WHERE student_number = $3",
-        newName, newSurname, studentNumber);
-
-    if (r.affected_rows() == 0) {
-      std::cerr << "Guncellenecek kayit bulunamadi (No: " << studentNumber
-                << ")" << std::endl;
-      // Commit etmeye gerek yok ama transaction'ı temiz kapatmak iyidir
-      w.commit();
-    } else {
-      w.commit();
-      std::cout << "Ogrenci Guncellendi (No: " << studentNumber << ")"
-                << std::endl;
-    }
-  } catch (const std::exception &e) {
-    std::cerr << "Guncelleme Hatasi: " << e.what() << std::endl;
-  }
-}
-
-// Öğrenci bulma
-Student Database::findStudent(int studentNumber) {
-  try {
-    pqxx::work w(*conn);
-    pqxx::result r = w.exec_params(
-        "SELECT id, name, surname, student_number FROM students WHERE "
-        "student_number = $1",
-        studentNumber);
-
-    if (r.empty()) {
-      throw std::runtime_error("Ogrenci bulunamadi: " +
-                               std::to_string(studentNumber));
-    }
-
-    auto row = r[0];
-    return Student(row[0].as<int>(), row[1].as<std::string>(),
-                   row[2].as<std::string>(), row[3].as<int>());
-  } catch (const std::exception &e) {
-    // Hatayı yukarı fırlat, main içinde yakalanacak
-    throw;
-  }
+pqxx::connection* Database::getConnection() {
+    return conn.get();
 }
