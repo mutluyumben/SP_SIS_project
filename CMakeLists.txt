@@ -47,6 +47,11 @@ endif()
 enable_testing()
 add_executable(sis_test tests/test_main.cpp src/Student.cpp)
 target_link_libraries(sis_test GTest::gtest_main)
+if(WIN32)
+    target_link_libraries(sis_test PRIVATE libpqxx::pqxx)
+else()
+    target_link_libraries(sis_test ${PQXX_LIBRARIES})
+endif()
 
 # Testi kaydet
 add_test(NAME StudentTest COMMAND sis_test)

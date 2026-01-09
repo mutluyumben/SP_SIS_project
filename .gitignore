@@ -2,3 +2,7 @@ build/
 .vscode/
 *.o
 sis_app
+vcpkg/
+vcpkg_installed/
+*.exe
+*.dll
