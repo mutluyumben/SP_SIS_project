@@ -20,7 +20,7 @@ o	Basic Functions:
 3.	Update student information
 4.	Delete student information
 5.	Database connection and transaction management 
-IMPORTANT DATES
+IMPORTANOT APPLICABLE - USING VIEW_FILE INSTEADS
 Event	Date	Description
 Project Start	12/12/2025	Team formation and project start
 Week 1 Check-in	19/12/2025	First week activity report submission
