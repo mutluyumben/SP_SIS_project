@@ -13,7 +13,7 @@ Kurulumdan sonra terminalde `docker --version` yazarak çalıştığını doğru
 ## 2. Proje Kurulumu
 1. Bu repoyu bilgisayarınıza klonlayın:
    ```bash
-   git clone <REPO_URL>
+   git clone https://github.com/mutluyumben/SP_SIS_project.git
    cd SP_SIS_project
    ```
 
